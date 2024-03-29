@@ -1,5 +1,5 @@
 ---
-name: "CI"
+name: "CI: Rust"
 
 on:
   push:
@@ -9,13 +9,9 @@ on:
     branches:
       - "*"
 
-env:
-  TZ: "Asia/Tokyo"
-
 # https://github.com/taiki-e/cargo-llvm-cov/tree/main?tab=readme-ov-file#continuous-integration
 jobs:
-  build:
-    name: build
+  test:
     runs-on: ubuntu-latest
 
     defaults:

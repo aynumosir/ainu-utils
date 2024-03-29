@@ -1,0 +1,32 @@
+---
+name: "Release: Rust"
+
+env:
+  CRATES_TOKEN: ${{ secrets.CRATES_TOKEN }}
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ainu-utils
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+
+      - name: Publish package rust
+        if: ${{ !contains(github.ref, 'rc') }}
+        run: cargo publish --token ${CRATES_TOKEN}
