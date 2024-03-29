@@ -1,0 +1,11 @@
+[project]
+name = "ainu-utils-python"
+requires-python = ">=3.8"
+dynamic = ["version"]
+
+[build-system]
+requires = ["maturin>=1.4,<2.0"]
+build-backend = "maturin"
+
+[tool.maturin]
+features = ["pyo3/extension-module"]
