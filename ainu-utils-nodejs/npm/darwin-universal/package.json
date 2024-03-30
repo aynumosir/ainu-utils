@@ -1,0 +1,15 @@
+{
+  "name": "ainu-utils-darwin-universal",
+  "version": "0.0.0",
+  "os": [
+    "darwin"
+  ],
+  "main": "ainu-utils.darwin-universal.node",
+  "files": [
+    "ainu-utils.darwin-universal.node"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">= 10"
+  }
+}

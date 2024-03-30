@@ -3,7 +3,7 @@
 #
 #    maturin generate-ci github -m ./ainu-utils-python/Cargo.toml -o ./.github/workflows/python.yaml --platform linux macos --pytest
 #
-name: CI
+name: "CI: Python"
 
 on:
   push:

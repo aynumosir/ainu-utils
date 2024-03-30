@@ -12,13 +12,14 @@
     devShell.aarch64-darwin = pkgs.mkShell {
       buildInputs = with pkgs; [
         libiconv
+        maturin
+        napi-rs-cli
         nodejs_20
         openssl
         pkg-config
         python311
-        maturin
         rustup
-        wasm-pack
+        yarn
       ];
     };
   };

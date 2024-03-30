@@ -1,0 +1,21 @@
+{
+  "name": "ainu-utils-linux-x64-gnu",
+  "version": "0.0.0",
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "main": "ainu-utils.linux-x64-gnu.node",
+  "files": [
+    "ainu-utils.linux-x64-gnu.node"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">= 10"
+  },
+  "libc": [
+    "glibc"
+  ]
+}

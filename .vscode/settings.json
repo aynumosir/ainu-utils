@@ -19,5 +19,8 @@
   },
 
   // https://github.com/microsoft/vscode-mypy/issues/157
-  "mypy-type-checker.reportingScope": "workspace"
+  "mypy-type-checker.reportingScope": "workspace",
+
+  // https://napi.rs/docs/introduction/getting-started#ide-support-problem
+  "rust-analyzer.procMacro.ignored": { "napi-derive": ["napi"] }
 }

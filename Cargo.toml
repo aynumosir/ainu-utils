@@ -1,7 +1,0 @@
-[workspace]
-resolver = "2"
-members = [
-  "ainu-utils",
-  "ainu-utils-python",
-  # "ainu-utils-js",
-]
