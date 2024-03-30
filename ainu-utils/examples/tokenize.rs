@@ -1,11 +1,11 @@
-use ainu_utils::tokenizer::tokenize;
+use ainu_utils::segmenter::segment;
 use std::env;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
     let text = &args[1];
 
-    let tokens = tokenize(text);
+    let tokens = segment(text);
 
     println!("{:?}", tokens);
 }

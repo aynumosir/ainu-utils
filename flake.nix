@@ -16,6 +16,7 @@
         openssl
         pkg-config
         python311
+        maturin
         rustup
         wasm-pack
       ];

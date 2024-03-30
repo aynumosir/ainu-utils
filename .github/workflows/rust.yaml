@@ -8,15 +8,17 @@ on:
   pull_request:
     branches:
       - "*"
+    paths: 
+      - "ainu-utils/**"
+
+defaults:
+  run:
+    working-directory: ainu-utils
 
 # https://github.com/taiki-e/cargo-llvm-cov/tree/main?tab=readme-ov-file#continuous-integration
 jobs:
   test:
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: ainu-utils
 
     steps:
       - name: Checkout
