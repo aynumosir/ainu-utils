@@ -111,6 +111,7 @@ jobs:
         with:
           node-version: 18
           cache: yarn
+          cache-dependency-path: ainu-utils-nodejs/yarn.lock
       - name: Install
         uses: dtolnay/rust-toolchain@stable
         if: ${{ !matrix.settings.docker }}
@@ -147,13 +148,14 @@ jobs:
         with:
           node-version: 18
           cache: yarn
+          cache-dependency-path: ainu-utils-nodejs/yarn.lock
           architecture: x86
       - name: Build in docker
         uses: addnab/docker-run-action@v3
         if: ${{ matrix.settings.docker }}
         with:
           image: ${{ matrix.settings.docker }}
-          options: '--user 0:0 -v ${{ github.workspace }}/.cargo-cache/git/db:/usr/local/cargo/git/db -v ${{ github.workspace }}/.cargo/registry/cache:/usr/local/cargo/registry/cache -v ${{ github.workspace }}/.cargo/registry/index:/usr/local/cargo/registry/index -v ${{ github.workspace }}:/build -w /build'
+          options: '--user 0:0 -v ${{ github.workspace }}/ainu-utils-nodejs/.cargo-cache/git/db:/usr/local/cargo/git/db -v ${{ github.workspace }}/ainu-utils-nodejs/.cargo/registry/cache:/usr/local/cargo/registry/cache -v ${{ github.workspace }}/ainu-utils-nodejs/.cargo/registry/index:/usr/local/cargo/registry/index -v ${{ github.workspace }}/ainu-utils-nodejs:/build -w /build'
           run: ${{ matrix.settings.build }}
       - name: Build
         run: ${{ matrix.settings.build }}
@@ -163,7 +165,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: bindings-${{ matrix.settings.target }}
-          path: ${{ env.APP_NAME }}.*.node
+          path: ainu-utils-nodejs/${{ env.APP_NAME }}.*.node
           if-no-files-found: error
   build-freebsd:
     runs-on: macos-12
@@ -211,7 +213,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: bindings-freebsd
-          path: ${{ env.APP_NAME }}.*.node
+          path: ainu-utils-nodejs/${{ env.APP_NAME }}.*.node
           if-no-files-found: error
   test-macOS-windows-binding:
     name: Test bindings on ${{ matrix.settings.target }} - node@${{ matrix.node }}
@@ -236,6 +238,7 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
           cache: yarn
+          cache-dependency-path: ainu-utils-nodejs/yarn.lock
       - name: Install dependencies
         run: yarn install
       - name: Download artifacts
@@ -266,6 +269,7 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
           cache: yarn
+          cache-dependency-path: ainu-utils-nodejs/yarn.lock
       - name: Install dependencies
         run: yarn install
       - name: Download artifacts
@@ -296,6 +300,7 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
           cache: yarn
+          cache-dependency-path: ainu-utils-nodejs/yarn.lock
       - name: Install dependencies
         run: |
           yarn config set supportedArchitectures.libc "musl"
@@ -345,7 +350,7 @@ jobs:
         uses: addnab/docker-run-action@v3
         with:
           image: node:${{ matrix.node }}-slim
-          options: '--platform linux/arm64 -v ${{ github.workspace }}:/build -w /build'
+          options: '--platform linux/arm64 -v ${{ github.workspace }}/ainu-utils-nodejs:/build -w /build'
           run: |
             set -e
             yarn test
@@ -379,7 +384,7 @@ jobs:
         uses: addnab/docker-run-action@v3
         with:
           image: node:lts-alpine
-          options: '--platform linux/arm64 -v ${{ github.workspace }}:/build -w /build'
+          options: '--platform linux/arm64 -v ${{ github.workspace }}/ainu-utils-nodejs:/build -w /build'
           run: |
             set -e
             yarn test
@@ -417,7 +422,7 @@ jobs:
         uses: addnab/docker-run-action@v3
         with:
           image: node:${{ matrix.node }}-bullseye-slim
-          options: '--platform linux/arm/v7 -v ${{ github.workspace }}:/build -w /build'
+          options: '--platform linux/arm/v7 -v ${{ github.workspace }}/ainu-utils-nodejs:/build -w /build'
           run: |
             set -e
             yarn test
@@ -434,6 +439,7 @@ jobs:
         with:
           node-version: 18
           cache: yarn
+          cache-dependency-path: ainu-utils-nodejs/yarn.lock
       - name: Install dependencies
         run: yarn install
       - name: Download macOS x64 artifact
@@ -452,7 +458,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: bindings-universal-apple-darwin
-          path: ${{ env.APP_NAME }}.*.node
+          path: ainu-utils-nodejs/${{ env.APP_NAME }}.*.node
           if-no-files-found: error
   publish:
     name: Publish
@@ -473,6 +479,7 @@ jobs:
         with:
           node-version: 18
           cache: yarn
+          cache-dependency-path: ainu-utils-nodejs/yarn.lock
       - name: Install dependencies
         run: yarn install
       - name: Download all artifacts
