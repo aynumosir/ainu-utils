@@ -31,7 +31,6 @@ jobs:
           wasm-pack build
           sed -i 's/"name": "ainu-utils-js"/"name": "ainu-utils"/' pkg/package.json
 
-
       - name: Publish
         run: wasm-pack publish
         env:
