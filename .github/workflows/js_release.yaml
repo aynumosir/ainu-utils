@@ -1,0 +1,35 @@
+---
+name: "Release: JS"
+
+on:
+  push:
+    tags:
+      - js-v*
+
+defaults:
+  run:
+    working-directory: ainu-utils-js
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+
+      - name: Install wasm-pack
+        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh -s -- -f
+
+      - name: Build
+        run: wasm-pack build
+
+      - name: Publish
+        run: wasm-pack publish
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
