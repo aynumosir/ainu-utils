@@ -8,15 +8,14 @@ on:
   push:
     tags:
       - v*
-  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: ainu-utils
 
 jobs:
   publish:
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: ainu-utils
 
     steps:
       - name: Checkout repository

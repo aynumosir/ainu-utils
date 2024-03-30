@@ -15,45 +15,45 @@ static SUFFIX_REGEX: Lazy<Regex> =
     Lazy::new(|| Regex::new(&format!(r"(?<word>\w+)(?<suffix>{})$", SUFFIXES.join("|"))).unwrap());
 
 fn parse_affix(token: String) -> Vec<String> {
-    let mut tokens = Vec::new();
+    let mut words = Vec::new();
 
     if let Some(caps) = PREFIX_REGEX.captures(&token) {
-        tokens.push(caps["prefix"].to_string());
-        tokens.push(caps["word"].to_string());
+        words.push(caps["prefix"].to_string());
+        words.push(caps["word"].to_string());
     } else if let Some(caps) = SUFFIX_REGEX.captures(&token) {
-        tokens.push(caps["word"].to_string());
-        tokens.push(caps["suffix"].to_string());
+        words.push(caps["word"].to_string());
+        words.push(caps["suffix"].to_string());
     } else {
-        tokens.push(token);
+        words.push(token);
     }
 
-    tokens
+   words 
 }
 
-pub fn tokenize(text: &str) -> Vec<String> {
-    let mut tokens = Vec::new();
-    let mut token = String::new();
+pub fn segment(text: &str) -> Vec<String> {
+    let mut words = Vec::new();
+    let mut word = String::new();
 
     for c in text.chars() {
         if c.is_alphabetic() || c == '=' {
-            token.push(c);
+            word.push(c);
         } else {
-            if !token.is_empty() {
-                tokens.extend(parse_affix(token));
-                token = String::new();
+            if !word.is_empty() {
+                words.extend(parse_affix(word));
+                word = String::new();
             }
 
             if !c.is_whitespace() {
-                tokens.push(c.to_string());
+                words.push(c.to_string());
             }
         }
     }
 
-    if !token.is_empty() {
-        tokens.extend(parse_affix(token));
+    if !word.is_empty() {
+        words.extend(parse_affix(word));
     }
 
-    tokens
+   words 
 }
 
 #[cfg(test)]
@@ -61,9 +61,9 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_tokenize() {
+    fn test_segment() {
         let text = "irankarapte! eyami yak a=ye aeywankep ku=kar wa k=an.";
-        let tokens = tokenize(text);
+        let tokens = segment(text);
 
         assert_eq!(
             tokens,
@@ -86,9 +86,9 @@ mod tests {
     }
 
     #[test]
-    fn test_tokenize_suffix() {
+    fn test_segment_suffix() {
         let text = "soyenpa=an wa sinot=an ro!";
-        let tokens = tokenize(text);
+        let tokens = segment(text);
 
         assert_eq!(
             tokens,
@@ -99,7 +99,7 @@ mod tests {
     #[test]
     fn test_sentence_does_not_end_with_period() {
         let text = "a=nukar hike i=yaykohaytare i=yaypokaste wa iki pe";
-        let tokens = tokenize(text);
+        let tokens = segment(text);
 
         assert_eq!(
             tokens,
@@ -121,7 +121,7 @@ mod tests {
     #[test]
     fn test_sentence_ending_with_a_fixed_word() {
         let text = "neno a=ye itak pirka a=ye itak i=koynu wa ... i=konu wa i=kore";
-        let tokens = tokenize(text);
+        let tokens = segment(text);
 
         assert_eq!(
             tokens,

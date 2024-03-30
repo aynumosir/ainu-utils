@@ -1,2 +1,2 @@
 pub mod number;
-pub mod tokenizer;
+pub mod segmenter;

@@ -1,0 +1,23 @@
+{
+  "cSpell.enabled": true,
+
+  "files.exclude": {
+    "**/.venv": true,
+    "**/.mypy_cache": true,
+    "**/.ruff_cache": true,
+    "**/.pytest_cache": true,
+    "**/*.egg-info": true,
+    "**/__pycache__": true
+  },
+
+  // https://github.com/astral-sh/ruff-vscode?tab=readme-ov-file#configuring-vs-code
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "always"
+    }
+  },
+
+  // https://github.com/microsoft/vscode-mypy/issues/157
+  "mypy-type-checker.reportingScope": "workspace"
+}

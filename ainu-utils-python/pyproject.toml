@@ -1,11 +1,22 @@
-[project]
-name = "ainu-utils-python"
-requires-python = ">=3.8"
-dynamic = ["version"]
-
 [build-system]
 requires = ["maturin>=1.4,<2.0"]
 build-backend = "maturin"
 
 [tool.maturin]
 features = ["pyo3/extension-module"]
+
+[project]
+name = "ainu-utils"
+description = "A collection of utility for with the Ainu language"
+requires-python = ">=3.8"
+version = "0.1.0"
+license = "MIT"
+
+[project.optional-dependencies]
+test = [
+	"pytest==8.1.1",
+]
+dev = [
+	"ruff==0.3.3",
+	"mypy==1.9.0",
+]

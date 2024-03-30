@@ -4,9 +4,10 @@ version = "0.1.0"
 edition = "2021"
 
 [lib]
-name = "ainu_utils_python"
+name = "ainu_utils"
 crate-type = ["cdylib"]
 
 [dependencies]
-pyo3 = "0.19.0"
+pyo3 = "0.20.0"
 ainu-utils = { path = "../ainu-utils" }
+
