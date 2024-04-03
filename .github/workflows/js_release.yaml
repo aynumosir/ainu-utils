@@ -5,6 +5,7 @@ on:
   push:
     tags:
       - js-v*
+  workflow_dispatch:
 
 defaults:
   run:
@@ -22,16 +23,25 @@ jobs:
         with:
           toolchain: stable
           override: true
+      
+      # https://github.com/npm/cli/issues/6184#issuecomment-1544496444
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          registry-url: "https://registry.npmjs.org"
 
       - name: Install wasm-pack
         run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh -s -- -f
 
       - name: Build
         run: |
-          wasm-pack build
-          sed -i 's/"name": "ainu-utils-js"/"name": "ainu-utils"/' pkg/package.json
+          wasm-pack build --target nodejs
+          cd ./pkg
+          npm pkg set name="ainu-utils"
+          echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
 
       - name: Publish
-        run: wasm-pack publish
+        run: wasm-pack publish --access public
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
