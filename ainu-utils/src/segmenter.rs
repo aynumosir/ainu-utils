@@ -8,26 +8,38 @@ const PREFIXES: [&str; 20] = [
 
 const SUFFIXES: [&str; 2] = ["=an", "=as"];
 
-static PREFIX_REGEX: Lazy<Regex> =
-    Lazy::new(|| Regex::new(&format!(r"^(?<prefix>{})(?<word>\w+)", PREFIXES.join("|"))).unwrap());
+static PREFIX: Lazy<Regex> = Lazy::new(|| {
+    let pattern = &format!(r"^(?<prefix>{})(?<stem>.+)", PREFIXES.join("|"));
+    Regex::new(pattern).unwrap()
+});
 
-static SUFFIX_REGEX: Lazy<Regex> =
-    Lazy::new(|| Regex::new(&format!(r"(?<word>\w+)(?<suffix>{})$", SUFFIXES.join("|"))).unwrap());
+static SUFFIX: Lazy<Regex> = Lazy::new(|| {
+    let pattern = &format!(r"(?<stem>.+)(?<suffix>{})$", SUFFIXES.join("|"));
+    Regex::new(pattern).unwrap()
+});
 
-fn parse_affix(token: String) -> Vec<String> {
-    let mut words = Vec::new();
-
-    if let Some(caps) = PREFIX_REGEX.captures(&token) {
-        words.push(caps["prefix"].to_string());
-        words.push(caps["word"].to_string());
-    } else if let Some(caps) = SUFFIX_REGEX.captures(&token) {
-        words.push(caps["word"].to_string());
-        words.push(caps["suffix"].to_string());
-    } else {
-        words.push(token);
+fn unfix(token: String) -> Vec<String> {
+    if token == "an=an" {
+        return vec!["an".to_string(), "=an".to_string()];
     }
 
-   words 
+    let prefix = PREFIX.captures(&token);
+    if let Some(captures) = prefix {
+        let mut words = vec![];
+        words.push(captures["prefix"].to_string());
+        words.extend(unfix(captures["stem"].to_string()));
+        return words;
+    }
+
+    let suffix = SUFFIX.captures(&token);
+    if let Some(captures) = suffix {
+        let mut words = vec![];
+        words.extend(unfix(captures["stem"].to_string()));
+        words.push(captures["suffix"].to_string());
+        return words;
+    }
+
+    vec![token]
 }
 
 pub fn segment(text: &str) -> Vec<String> {
@@ -35,13 +47,15 @@ pub fn segment(text: &str) -> Vec<String> {
     let mut word = String::new();
 
     for c in text.chars() {
-        if c.is_alphabetic() || c.is_numeric() || c == '='  {
+        if c.is_alphabetic() || c.is_numeric() || c == '=' {
             word.push(c);
         } else if c == '\'' && !word.is_empty() {
             word.push(c);
+        } else if c == '-' && !word.is_empty() {
+            word.push(c);
         } else {
             if !word.is_empty() {
-                words.extend(parse_affix(word));
+                words.extend(unfix(word));
                 word = String::new();
             }
 
@@ -52,10 +66,10 @@ pub fn segment(text: &str) -> Vec<String> {
     }
 
     if !word.is_empty() {
-        words.extend(parse_affix(word));
+        words.extend(unfix(word));
     }
 
-   words 
+    words
 }
 
 #[cfg(test)]
@@ -140,6 +154,23 @@ mod tests {
         let tokens = segment(text);
 
         assert_eq!(tokens, vec!["1000", "yen", "ku=", "kor"]);
+    }
+
+    #[test]
+    fn test_handles_hyphen_within_word() {
+        let text = "cep-koyki wa e";
+        let tokens = segment(text);
+        assert_eq!(tokens, vec!["cep-koyki", "wa", "e"]);
+    }
+
+    #[test]
+    fn test_handles_double_prefixes() {
+        let text = "niwen seta ne kusu a=e=kupa na.";
+        let tokens = segment(text);
+        assert_eq!(
+            tokens,
+            vec!["niwen", "seta", "ne", "kusu", "a=", "e=", "kupa", "na", "."]
+        );
     }
 
     #[test]
