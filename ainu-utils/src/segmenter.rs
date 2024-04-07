@@ -37,6 +37,8 @@ pub fn segment(text: &str) -> Vec<String> {
     for c in text.chars() {
         if c.is_alphabetic() || c.is_numeric() || c == '='  {
             word.push(c);
+        } else if c == '\'' && !word.is_empty() {
+            word.push(c);
         } else {
             if !word.is_empty() {
                 words.extend(parse_affix(word));
@@ -138,5 +140,19 @@ mod tests {
         let tokens = segment(text);
 
         assert_eq!(tokens, vec!["1000", "yen", "ku=", "kor"]);
+    }
+
+    #[test]
+    fn test_handles_glottal_stop() {
+        let text = "ku=kor irwak'utari";
+        let tokens = segment(text);
+        assert_eq!(tokens, vec!["ku=", "kor", "irwak'utari"]);
+
+        let text = "'ku=kor rusuy!' sekor hawean";
+        let tokens = segment(text);
+        assert_eq!(
+            tokens,
+            vec!["'", "ku=", "kor", "rusuy", "!", "'", "sekor", "hawean"]
+        );
     }
 }
