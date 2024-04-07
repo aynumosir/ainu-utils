@@ -35,7 +35,7 @@ pub fn segment(text: &str) -> Vec<String> {
     let mut word = String::new();
 
     for c in text.chars() {
-        if c.is_alphabetic() || c == '=' {
+        if c.is_alphabetic() || c.is_numeric() || c == '='  {
             word.push(c);
         } else {
             if !word.is_empty() {
@@ -130,5 +130,13 @@ mod tests {
                 ".", ".", "i=", "konu", "wa", "i=", "kore"
             ]
         );
+    }
+
+    #[test]
+    fn test_parse_numbers() {
+        let text = "1000 yen ku=kor";
+        let tokens = segment(text);
+
+        assert_eq!(tokens, vec!["1000", "yen", "ku=", "kor"]);
     }
 }

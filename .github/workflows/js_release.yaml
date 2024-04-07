@@ -4,6 +4,7 @@ name: "Release: JS"
 on:
   push:
     tags:
+      - v*
       - js-v*
   workflow_dispatch:
 
