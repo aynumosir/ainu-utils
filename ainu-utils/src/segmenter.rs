@@ -8,52 +8,72 @@ const PREFIXES: [&str; 20] = [
 
 const SUFFIXES: [&str; 2] = ["=an", "=as"];
 
-static PREFIX_REGEX: Lazy<Regex> =
-    Lazy::new(|| Regex::new(&format!(r"^(?<prefix>{})(?<word>\w+)", PREFIXES.join("|"))).unwrap());
+static PREFIX: Lazy<Regex> = Lazy::new(|| {
+    let pattern = &format!(r"^(?<prefix>{})(?<stem>.+)", PREFIXES.join("|"));
+    Regex::new(pattern).unwrap()
+});
 
-static SUFFIX_REGEX: Lazy<Regex> =
-    Lazy::new(|| Regex::new(&format!(r"(?<word>\w+)(?<suffix>{})$", SUFFIXES.join("|"))).unwrap());
+static SUFFIX: Lazy<Regex> = Lazy::new(|| {
+    let pattern = &format!(r"(?<stem>.+)(?<suffix>{})$", SUFFIXES.join("|"));
+    Regex::new(pattern).unwrap()
+});
 
-fn parse_affix(token: String) -> Vec<String> {
-    let mut words = Vec::new();
-
-    if let Some(caps) = PREFIX_REGEX.captures(&token) {
-        words.push(caps["prefix"].to_string());
-        words.push(caps["word"].to_string());
-    } else if let Some(caps) = SUFFIX_REGEX.captures(&token) {
-        words.push(caps["word"].to_string());
-        words.push(caps["suffix"].to_string());
-    } else {
-        words.push(token);
+fn unfix(token: String) -> Vec<String> {
+    if token == "an=an" {
+        return vec!["an".to_string(), "=an".to_string()];
     }
 
-   words 
+    let prefix = PREFIX.captures(&token);
+    if let Some(captures) = prefix {
+        let mut words = vec![];
+        words.push(captures["prefix"].to_string());
+        words.extend(unfix(captures["stem"].to_string()));
+        return words;
+    }
+
+    let suffix = SUFFIX.captures(&token);
+    if let Some(captures) = suffix {
+        let mut words = vec![];
+        words.extend(unfix(captures["stem"].to_string()));
+        words.push(captures["suffix"].to_string());
+        return words;
+    }
+
+    vec![token]
 }
 
-pub fn segment(text: &str) -> Vec<String> {
+pub fn segment(text: &str, keep_whitespace: bool) -> Vec<String> {
     let mut words = Vec::new();
     let mut word = String::new();
 
     for c in text.chars() {
-        if c.is_alphabetic() || c.is_numeric() || c == '='  {
+        if c.is_alphabetic() || c.is_numeric() || c == '=' {
+            word.push(c);
+        } else if c == '\'' && !word.is_empty() {
+            word.push(c);
+        } else if c == '-' && !word.is_empty() {
             word.push(c);
         } else {
             if !word.is_empty() {
-                words.extend(parse_affix(word));
+                words.extend(unfix(word));
                 word = String::new();
             }
 
             if !c.is_whitespace() {
                 words.push(c.to_string());
             }
+
+            if c.is_whitespace() && keep_whitespace {
+                words.push(c.to_string());
+            }
         }
     }
 
     if !word.is_empty() {
-        words.extend(parse_affix(word));
+        words.extend(unfix(word));
     }
 
-   words 
+    words
 }
 
 #[cfg(test)]
@@ -63,7 +83,7 @@ mod tests {
     #[test]
     fn test_segment() {
         let text = "irankarapte! eyami yak a=ye aeywankep ku=kar wa k=an.";
-        let tokens = segment(text);
+        let tokens = segment(text, false);
 
         assert_eq!(
             tokens,
@@ -88,7 +108,7 @@ mod tests {
     #[test]
     fn test_segment_suffix() {
         let text = "soyenpa=an wa sinot=an ro!";
-        let tokens = segment(text);
+        let tokens = segment(text, false);
 
         assert_eq!(
             tokens,
@@ -99,7 +119,7 @@ mod tests {
     #[test]
     fn test_sentence_does_not_end_with_period() {
         let text = "a=nukar hike i=yaykohaytare i=yaypokaste wa iki pe";
-        let tokens = segment(text);
+        let tokens = segment(text, false);
 
         assert_eq!(
             tokens,
@@ -121,7 +141,7 @@ mod tests {
     #[test]
     fn test_sentence_ending_with_a_fixed_word() {
         let text = "neno a=ye itak pirka a=ye itak i=koynu wa ... i=konu wa i=kore";
-        let tokens = segment(text);
+        let tokens = segment(text, false);
 
         assert_eq!(
             tokens,
@@ -135,8 +155,59 @@ mod tests {
     #[test]
     fn test_parse_numbers() {
         let text = "1000 yen ku=kor";
-        let tokens = segment(text);
+        let tokens = segment(text, false);
 
         assert_eq!(tokens, vec!["1000", "yen", "ku=", "kor"]);
+    }
+
+    #[test]
+    fn test_handles_hyphen_within_word() {
+        let text = "cep-koyki wa e";
+        let tokens = segment(text, false);
+        assert_eq!(tokens, vec!["cep-koyki", "wa", "e"]);
+    }
+
+    #[test]
+    fn test_handles_double_prefixes() {
+        let text = "niwen seta ne kusu a=e=kupa na.";
+        let tokens = segment(text, false);
+        assert_eq!(
+            tokens,
+            vec!["niwen", "seta", "ne", "kusu", "a=", "e=", "kupa", "na", "."]
+        );
+    }
+
+    #[test]
+    fn test_handles_glottal_stop() {
+        let text = "ku=kor irwak'utari";
+        let tokens = segment(text, false);
+        assert_eq!(tokens, vec!["ku=", "kor", "irwak'utari"]);
+
+        let text = "'ku=kor rusuy!' sekor hawean";
+        let tokens = segment(text, false);
+        assert_eq!(
+            tokens,
+            vec!["'", "ku=", "kor", "rusuy", "!", "'", "sekor", "hawean"]
+        );
+    }
+
+    #[test]
+    fn test_keep_whitespace() {
+        let text = "irankarapte. tanto sirpirka ne.";
+        let tokens = segment(text, true);
+        assert_eq!(
+            tokens,
+            vec![
+                "irankarapte",
+                ".",
+                " ",
+                "tanto",
+                " ",
+                "sirpirka",
+                " ",
+                "ne",
+                "."
+            ]
+        );
     }
 }
