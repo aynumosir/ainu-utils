@@ -5,7 +5,7 @@ fn main() {
     let args: Vec<String> = env::args().collect();
     let text = &args[1];
 
-    let tokens = segment(text);
+    let tokens = segment(text, false);
 
     println!("{:?}", tokens);
 }

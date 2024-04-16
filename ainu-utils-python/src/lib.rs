@@ -3,8 +3,8 @@ extern crate ainu_utils as ainu_utils_rust;
 use pyo3::prelude::*;
 
 #[pyfunction]
-fn segment(text: &str) -> Vec<String> {
-    ainu_utils_rust::segmenter::segment(text)
+fn segment(text: &str, keep_whitespace: bool) -> Vec<String> {
+    ainu_utils_rust::segmenter::segment(text, keep_whitespace)
 }
 
 #[pymodule]

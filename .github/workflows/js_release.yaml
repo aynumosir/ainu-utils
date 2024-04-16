@@ -37,6 +37,7 @@ jobs:
       - name: Build
         run: |
           wasm-pack build --target nodejs
+          node ./patch.mjs
           cd ./pkg
           npm pkg set name="ainu-utils"
           echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc

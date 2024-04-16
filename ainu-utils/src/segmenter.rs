@@ -42,7 +42,7 @@ fn unfix(token: String) -> Vec<String> {
     vec![token]
 }
 
-pub fn segment(text: &str) -> Vec<String> {
+pub fn segment(text: &str, keep_whitespace: bool) -> Vec<String> {
     let mut words = Vec::new();
     let mut word = String::new();
 
@@ -62,6 +62,10 @@ pub fn segment(text: &str) -> Vec<String> {
             if !c.is_whitespace() {
                 words.push(c.to_string());
             }
+
+            if c.is_whitespace() && keep_whitespace {
+                words.push(c.to_string());
+            }
         }
     }
 
@@ -79,7 +83,7 @@ mod tests {
     #[test]
     fn test_segment() {
         let text = "irankarapte! eyami yak a=ye aeywankep ku=kar wa k=an.";
-        let tokens = segment(text);
+        let tokens = segment(text, false);
 
         assert_eq!(
             tokens,
@@ -104,7 +108,7 @@ mod tests {
     #[test]
     fn test_segment_suffix() {
         let text = "soyenpa=an wa sinot=an ro!";
-        let tokens = segment(text);
+        let tokens = segment(text, false);
 
         assert_eq!(
             tokens,
@@ -115,7 +119,7 @@ mod tests {
     #[test]
     fn test_sentence_does_not_end_with_period() {
         let text = "a=nukar hike i=yaykohaytare i=yaypokaste wa iki pe";
-        let tokens = segment(text);
+        let tokens = segment(text, false);
 
         assert_eq!(
             tokens,
@@ -137,7 +141,7 @@ mod tests {
     #[test]
     fn test_sentence_ending_with_a_fixed_word() {
         let text = "neno a=ye itak pirka a=ye itak i=koynu wa ... i=konu wa i=kore";
-        let tokens = segment(text);
+        let tokens = segment(text, false);
 
         assert_eq!(
             tokens,
@@ -151,7 +155,7 @@ mod tests {
     #[test]
     fn test_parse_numbers() {
         let text = "1000 yen ku=kor";
-        let tokens = segment(text);
+        let tokens = segment(text, false);
 
         assert_eq!(tokens, vec!["1000", "yen", "ku=", "kor"]);
     }
@@ -159,14 +163,14 @@ mod tests {
     #[test]
     fn test_handles_hyphen_within_word() {
         let text = "cep-koyki wa e";
-        let tokens = segment(text);
+        let tokens = segment(text, false);
         assert_eq!(tokens, vec!["cep-koyki", "wa", "e"]);
     }
 
     #[test]
     fn test_handles_double_prefixes() {
         let text = "niwen seta ne kusu a=e=kupa na.";
-        let tokens = segment(text);
+        let tokens = segment(text, false);
         assert_eq!(
             tokens,
             vec!["niwen", "seta", "ne", "kusu", "a=", "e=", "kupa", "na", "."]
@@ -176,14 +180,34 @@ mod tests {
     #[test]
     fn test_handles_glottal_stop() {
         let text = "ku=kor irwak'utari";
-        let tokens = segment(text);
+        let tokens = segment(text, false);
         assert_eq!(tokens, vec!["ku=", "kor", "irwak'utari"]);
 
         let text = "'ku=kor rusuy!' sekor hawean";
-        let tokens = segment(text);
+        let tokens = segment(text, false);
         assert_eq!(
             tokens,
             vec!["'", "ku=", "kor", "rusuy", "!", "'", "sekor", "hawean"]
+        );
+    }
+
+    #[test]
+    fn test_keep_whitespace() {
+        let text = "irankarapte. tanto sirpirka ne.";
+        let tokens = segment(text, true);
+        assert_eq!(
+            tokens,
+            vec![
+                "irankarapte",
+                ".",
+                " ",
+                "tanto",
+                " ",
+                "sirpirka",
+                " ",
+                "ne",
+                "."
+            ]
         );
     }
 }
