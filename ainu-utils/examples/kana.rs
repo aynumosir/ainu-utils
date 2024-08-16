@@ -1,11 +1,11 @@
-use ainu_utils::tokenizer::tokenize;
+use ainu_utils::kana::to_kana;
 use std::env;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
     let text = &args[1];
 
-    let tokens = tokenize(text, false);
+    let kana = to_kana(text);
 
-    println!("{:?}", tokens);
+    println!("{}", kana);
 }

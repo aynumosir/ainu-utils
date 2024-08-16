@@ -24,7 +24,7 @@ jobs:
         with:
           target: x86_64
           args: --release --out dist --find-interpreter --manifest-path ./ainu-utils-python/Cargo.toml
-          sccache: 'true'
+          # sccache: 'true'
           manylinux: auto
 
       - name: pytest

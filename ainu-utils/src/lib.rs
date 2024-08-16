@@ -1,1 +1,2 @@
-pub mod segmenter;
+pub mod kana;
+pub mod tokenizer;
