@@ -7,7 +7,7 @@ def test_tokenize():
 
 
 def test_tokenize_with_whitespace():
-    result = ainu_utils.segment("irankarapte. e=iwanke ya?", keep_whitespace=True)
+    result = ainu_utils.tokenize("irankarapte. e=iwanke ya?", keep_whitespace=True)
     assert result == ["irankarapte", ".", " ", "e=", "iwanke", " ", "ya", "?"]
 
 

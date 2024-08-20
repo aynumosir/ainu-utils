@@ -1,10 +1,9 @@
-use super::sets::{CONSONANTS, SPECIAL_CONSONANTS, SYMBOLS, VOWELS};
-use super::tables::{TABLE_1, TABLE_2, TABLE_3};
+use super::constants::{CONSONANTS, SPECIAL_CONSONANTS, SYMBOLS, VOWELS};
+use super::linking::link;
+use super::maps::{TABLE_1, TABLE_2, TABLE_3};
 use diacritics::remove_diacritics;
 
-fn normalize(input: &str) -> String {
-    let mut input = input.to_string();
-
+fn normalize(mut input: String) -> String {
     input = input.to_lowercase();
     input = input.replace("=", "");
     input = remove_diacritics(&input).to_string();
@@ -13,7 +12,11 @@ fn normalize(input: &str) -> String {
 }
 
 pub fn to_kana(input: &str) -> String {
-    let input = normalize(input);
+    let mut input = input.to_string();
+
+    input = normalize(input);
+    input = link(input);
+
     let chars: Vec<char> = input.chars().collect();
 
     let mut kana = String::new();
