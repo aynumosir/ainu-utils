@@ -119,8 +119,3 @@ pub static TABLE_2: Lazy<HashMap<&'static str, &'static str>> = Lazy::new(|| {
 
     items.iter().cloned().collect()
 });
-
-pub static TABLE_3: Lazy<HashMap<&'static str, &'static str>> = Lazy::new(|| {
-    let items = [(",", "、"), (".", "。")];
-    items.iter().cloned().collect()
-});

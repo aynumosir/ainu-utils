@@ -15,13 +15,13 @@ fn test_to_kana() {
     assert_eq!(
 		to_kana(&sentence),
 		[
-			"タネポ アシㇼパ タㇰ ニㇱパ ネ クス、 アキヤンネレ ナ。",
-			"アシㇼパ エキㇺネ パテㇰ キ ワ、 メノコ モンライケ エアイカㇷ゚。",
-			"ケメイキ ネ ヤ、 イテセ ネ ヤ、 メノコ モンライケ エアイカㇷ゚ メノコ アナㇰ、 アイヌ ホク コㇿ カ エアイカㇷ゚。",
-			"タネ シヌイェ クニ パハ ネ コㇿカ、 コパン。",
-			"スギモト ニㇱパ、 タン マッカチ エトゥン ワ エンコレ!",
-			"タン クミッポホ クエポタラ ワ モシㇼ クホッパ カ コヤイクㇱ。",
-		].join(" ")
+            "タネポ　アシㇼパ　タㇰ　ニㇱパ　ネ　クス、　アキヤンネレ　ナ。",
+            "アシㇼパ　エキㇺネ　パテㇰ　キ　ワ、　メノコ　モンライケ　エアイカㇷ゚。",
+            "ケメイキ　ネ　ヤ、　イテセ　ネ　ヤ、　メノコ　モンライケ　エアイカㇷ゚　メノコ　アナㇰ、　アイヌ　ホク　コㇿ　カ　エアイカㇷ゚。",
+            "タネ　シヌイェ　クニ　パハ　ネ　コㇿカ、　コパン。",
+            "スギモト　ニㇱパ、　タン　マッカチ　エトゥン　ワ　エンコレ！",
+            "タン　クミッポホ　クエポタラ　ワ　モシㇼ　クホッパ　カ　コヤイクㇱ。",
+		].join("　")
 	)
 }
 
@@ -32,7 +32,7 @@ fn test_dropping_h() {
 
 #[test]
 fn test_dropping_y() {
-    assert_eq!(to_kana("_ya?"), "ア?")
+    assert_eq!(to_kana("_ya?"), "ア？")
 }
 
 #[test]
@@ -42,12 +42,12 @@ fn test_linking_h() {
 
 #[test]
 fn test_linking_y() {
-    assert_eq!(to_kana("nankor __ya?"), "ナンコラ?")
+    assert_eq!(to_kana("nankor __ya?"), "ナンコラ？")
 }
 
 #[test]
 fn test_linking_a() {
-    assert_eq!(to_kana("cis _a cis _a"), "チサ チサ")
+    assert_eq!(to_kana("cis _a cis _a"), "チサ　チサ")
 }
 
 #[test]
@@ -72,7 +72,7 @@ fn test_linking_o() {
 
 #[test]
 fn test_linking_and_dropping_a() {
-    assert_eq!(to_kana("yaypuri ekira __ani"), "ヤイプリ エキラニ")
+    assert_eq!(to_kana("yaypuri ekira __ani"), "ヤイプリ　エキラニ")
 }
 
 #[test]
@@ -87,7 +87,7 @@ fn test_linking_and_dropping_u() {
 
 #[test]
 fn test_linking_and_dropping_e() {
-    assert_eq!(to_kana("i=samake __en anu"), "イサマケン アヌ")
+    assert_eq!(to_kana("i=samake __en anu"), "イサマケン　アヌ")
 }
 
 #[test]
@@ -98,47 +98,47 @@ fn test_linking_and_dropping_o() {
 
 #[test]
 fn test_linking_r_n() {
-    assert_eq!(to_kana("a=kor_ nispa"), "アコン ニㇱパ")
+    assert_eq!(to_kana("a=kor_ nispa"), "アコン　ニㇱパ")
 }
 
 #[test]
 fn test_linking_r_r() {
-    assert_eq!(to_kana("kor_ rusuy"), "コン ルスイ")
+    assert_eq!(to_kana("kor_ rusuy"), "コン　ルスイ")
 }
 
 #[test]
 fn test_linking_r_t() {
-    assert_eq!(to_kana("or_ ta"), "オッ タ")
+    assert_eq!(to_kana("or_ ta"), "オッ　タ")
 }
 
 #[test]
 fn test_linking_r_c() {
-    assert_eq!(to_kana("yar_ cise"), "ヤッ チセ")
+    assert_eq!(to_kana("yar_ cise"), "ヤッ　チセ")
 }
 
 #[test]
 fn test_linking_n_s() {
-    assert_eq!(to_kana("pon_ su"), "ポイ ス")
+    assert_eq!(to_kana("pon_ su"), "ポイ　ス")
 }
 
 #[test]
 fn test_linking_n_y() {
-    assert_eq!(to_kana("pon_ yam"), "ポイ ヤㇺ")
+    assert_eq!(to_kana("pon_ yam"), "ポイ　ヤㇺ")
 }
 
 #[test]
 fn test_linking_n_w() {
-    assert_eq!(to_kana("san _wa"), "サン マ")
+    assert_eq!(to_kana("san _wa"), "サン　マ")
 }
 
 #[test]
 fn test_linking_m_w() {
-    assert_eq!(to_kana("isam _wa"), "イサン マ")
+    assert_eq!(to_kana("isam _wa"), "イサン　マ")
 }
 
 #[test]
 fn test_linking_p_w() {
-    assert_eq!(to_kana("sap _wa"), "サッ パ")
+    assert_eq!(to_kana("sap _wa"), "サッ　パ")
 }
 
 #[test]
@@ -149,4 +149,9 @@ fn test_special_mp() {
 #[test]
 fn test_special_mm() {
     assert_eq!(to_kana("umma"), "ウンマ")
+}
+
+#[test]
+fn test_symbols() {
+    assert_eq!(to_kana("“pirka” sekor a=ye"), "「ピㇼカ」　セコㇿ　アイェ")
 }

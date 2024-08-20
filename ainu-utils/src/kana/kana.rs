@@ -1,13 +1,12 @@
-use super::constants::{CONSONANTS, SPECIAL_CONSONANTS, SYMBOLS, VOWELS};
+use super::constants::{CONSONANTS, SPECIAL_CONSONANTS, VOWELS};
 use super::linking::link;
-use super::maps::{TABLE_1, TABLE_2, TABLE_3};
+use super::maps::{TABLE_1, TABLE_2};
+use super::symbols::symbols;
 use diacritics::remove_diacritics;
 
 fn normalize(mut input: String) -> String {
     input = input.to_lowercase();
-    input = input.replace("=", "");
     input = remove_diacritics(&input).to_string();
-
     input
 }
 
@@ -70,18 +69,12 @@ pub fn to_kana(input: &str) -> String {
                 }
             }
 
-            if SYMBOLS.contains(&current) {
-                if let Some(&value) = TABLE_3.get(&current.to_string().as_ref()) {
-                    kana.push_str(value);
-                    index += 1;
-                    continue;
-                }
-            }
-
             kana.push(current);
             index += 1;
         }
     }
+
+    kana = symbols(kana);
 
     kana
 }

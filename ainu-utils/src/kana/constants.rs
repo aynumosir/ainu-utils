@@ -17,8 +17,3 @@ pub static SPECIAL_CONSONANTS: Lazy<HashSet<char>> = Lazy::new(|| {
     let items = ['r', 'h'];
     items.iter().cloned().collect()
 });
-
-pub static SYMBOLS: Lazy<HashSet<char>> = Lazy::new(|| {
-    let items = ['.', ','];
-    items.iter().cloned().collect()
-});
