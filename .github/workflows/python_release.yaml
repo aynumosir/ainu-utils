@@ -43,8 +43,7 @@ jobs:
         shell: bash
         run: |
           set -e
-          pip install --upgrade "pip<20"
-          pip install ainu-utils --find-links dist --force-reinstall
+          pip install ainu-utils==0.3.0 --find-links dist --force-reinstall
           pip install pytest
           cd ./ainu-utils-python && pytest
       - name: pytest
@@ -60,7 +59,7 @@ jobs:
             pip3 install -U pip pytest
           run: |
             set -e
-            pip3 install ainu-utils --find-links dist --force-reinstall
+            pip3 install ainu-utils==0.3.0 --find-links dist --force-reinstall
             cd ./ainu-utils-python && pytest
 
   windows:
@@ -90,8 +89,7 @@ jobs:
         shell: bash
         run: |
           set -e
-          pip install --upgrade "pip<20"
-          pip install ainu-utils --find-links dist --force-reinstall
+          pip install ainu-utils==0.3.0 --find-links dist --force-reinstall
           pip install pytest
           cd ./ainu-utils-python && pytest
 
@@ -121,8 +119,7 @@ jobs:
         shell: bash
         run: |
           set -e
-          pip install --upgrade "pip<20"
-          pip install ainu-utils --find-links dist --force-reinstall
+          pip install ainu-utils==0.3.0 --find-links dist --force-reinstall
           pip install pytest
           cd ./ainu-utils-python && pytest
 

@@ -31,7 +31,6 @@ jobs:
         shell: bash
         run: |
           set -e
-          pip install --upgrade "pip<20"
           pip install ainu-utils --find-links dist --force-reinstall
           pip install pytest
           cd ./ainu-utils-python && pytest
