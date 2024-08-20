@@ -15,6 +15,7 @@ pub fn to_kana(input: &str) -> String {
 
     input = normalize(input);
     input = link(input);
+    input = symbols(input);
 
     let chars: Vec<char> = input.chars().collect();
 
@@ -73,8 +74,6 @@ pub fn to_kana(input: &str) -> String {
             index += 1;
         }
     }
-
-    kana = symbols(kana);
 
     kana
 }

@@ -155,3 +155,11 @@ fn test_special_mm() {
 fn test_symbols() {
     assert_eq!(to_kana("“pirka” sekor a=ye"), "「ピㇼカ」　セコㇿ　アイェ")
 }
+
+#[test]
+fn test_k_prefix() {
+    assert_eq!(
+        to_kana("irankarapte. kani anak IMO k=e easkay kur ku=ne."),
+        "イランカラㇷ゚テ。　カニ　アナㇰ　イモ　ケ　エアㇱカイ　クㇽ　クネ。"
+    )
+}
