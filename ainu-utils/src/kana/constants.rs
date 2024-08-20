@@ -8,7 +8,7 @@ pub static VOWELS: Lazy<HashSet<char>> = Lazy::new(|| {
 
 pub static CONSONANTS: Lazy<HashSet<char>> = Lazy::new(|| {
     let items = [
-        'k', 'g', 's', 'z', 't', 'd', 'c', 'j', 'n', 'h', 'p', 'm', 'y', 'r', 'w',
+        'k', 'g', 's', 'z', 't', 'd', 'c', 'j', 'n', 'h', 'p', 'b', 'f', 'm', 'y', 'r', 'w',
     ];
     items.iter().cloned().collect()
 });

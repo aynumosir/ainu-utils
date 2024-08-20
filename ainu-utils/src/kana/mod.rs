@@ -2,8 +2,9 @@ mod kana;
 
 pub use self::kana::*;
 
-mod sets;
-mod tables;
+mod constants;
+mod linking;
+mod maps;
 
 #[cfg(test)]
 mod kana_test;
