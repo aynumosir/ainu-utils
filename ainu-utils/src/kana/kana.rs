@@ -2,11 +2,16 @@ use super::constants::{CONSONANTS, SPECIAL_CONSONANTS, VOWELS};
 use super::linking::link;
 use super::maps::{TABLE_1, TABLE_2};
 use super::symbols::symbols;
-use diacritics::remove_diacritics;
+use unicode_normalization::char::is_combining_mark;
+use unicode_normalization::UnicodeNormalization;
+
+fn strip_accents(input: &str) -> String {
+    input.nfkd().filter(|c| !is_combining_mark(*c)).collect()
+}
 
 fn normalize(mut input: String) -> String {
     input = input.to_lowercase();
-    input = remove_diacritics(&input).to_string();
+    input = strip_accents(input.as_str()).to_string();
     input
 }
 

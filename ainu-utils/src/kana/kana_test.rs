@@ -163,3 +163,8 @@ fn test_k_prefix() {
         "イランカラㇷ゚テ。　カニ　アナㇰ　イモ　ケ　エアㇱカイ　クㇽ　クネ。"
     )
 }
+
+#[test]
+fn test_diacritics() {
+    assert_eq!(to_kana("kamúy"), "カムイ")
+}

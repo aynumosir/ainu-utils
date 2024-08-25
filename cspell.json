@@ -3,7 +3,12 @@
   "ignorePaths": [],
   "dictionaryDefinitions": [],
   "dictionaries": [],
-  "words": ["bindgen", "pyfunction", "pymodule"],
+  "words": [
+    "bindgen",
+    "nfkd",
+    "pyfunction",
+    "pymodule"
+  ],
   "ignoreWords": [],
   "import": []
 }

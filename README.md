@@ -5,7 +5,7 @@
 
 A collection of utility for with the Ainu language
 
-## Rleases
+## Releases
 
 ainu-utils is distributed as a Rust crate, but you can also use its binding for Python and Node.js.
 
