@@ -1,4 +1,4 @@
-static SYMBOLS: [(&str, &str); 16] = [
+static SYMBOLS: [(&str, &str); 15] = [
     ("-", ""),
     ("=", ""),
     (" ", "　"),
@@ -13,11 +13,10 @@ static SYMBOLS: [(&str, &str); 16] = [
     (".", "。"),
     ("!", "！"),
     ("?", "？"),
-    ("'", ""),
     ("`", ""),
 ];
 
-pub fn symbols(input: String) -> String {
+pub fn map_symbols(input: String) -> String {
     let mut input = input;
 
     for (from, to) in SYMBOLS.iter() {

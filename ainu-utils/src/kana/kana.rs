@@ -1,7 +1,7 @@
 use super::constants::{CONSONANTS, SPECIAL_CONSONANTS, VOWELS};
 use super::linking::link;
 use super::maps::{TABLE_1, TABLE_2};
-use super::symbols::symbols;
+use super::symbols::map_symbols;
 use unicode_normalization::char::is_combining_mark;
 use unicode_normalization::UnicodeNormalization;
 
@@ -20,7 +20,7 @@ pub fn to_kana(input: &str) -> String {
 
     input = normalize(input);
     input = link(input);
-    input = symbols(input);
+    input = map_symbols(input);
 
     let chars: Vec<char> = input.chars().collect();
 
@@ -43,7 +43,7 @@ pub fn to_kana(input: &str) -> String {
 
             if CONSONANTS.contains(&current) {
                 if let Some(&next) = next {
-                    if current == next && current != 'n' {
+                    if current == next && !['n', 'y', 'w'].contains(&current) {
                         kana.push_str(TABLE_1.get("t").unwrap());
                         index += 1;
                         continue;
@@ -73,6 +73,11 @@ pub fn to_kana(input: &str) -> String {
                         continue;
                     }
                 }
+            }
+
+            if '\'' == current {
+                index += 1;
+                continue;
             }
 
             kana.push(current);
