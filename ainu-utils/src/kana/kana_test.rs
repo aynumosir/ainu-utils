@@ -168,3 +168,14 @@ fn test_k_prefix() {
 fn test_diacritics() {
     assert_eq!(to_kana("kamúy"), "カムイ")
 }
+
+#[test]
+fn test_yy_and_ww() {
+    assert_eq!(to_kana("kamuyyukar"), "カムイユカㇻ");
+    assert_eq!(to_kana("eawwo"), "エアウウォ");
+}
+
+#[test]
+fn test_glottal_stop() {
+    assert_eq!(to_kana("hioy'oy"), "ヒオイオイ");
+}
