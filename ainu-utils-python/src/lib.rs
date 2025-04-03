@@ -12,10 +12,16 @@ fn to_kana(text: &str) -> String {
     ainu_utils_rust::kana::to_kana(text)
 }
 
+#[pyfunction]
+fn number_to_words(input: i32) -> String {
+    ainu_utils_rust::numbers::parse(input).unwrap().to_string()
+}
+
 #[pymodule]
-fn ainu_utils(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
+fn ainu_utils(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(tokenize, m)?)?;
     m.add_function(wrap_pyfunction!(to_kana, m)?)?;
+    m.add_function(wrap_pyfunction!(number_to_words, m)?)?;
     m.add("test_number", 123)?;
     Ok(())
 }

@@ -15,6 +15,12 @@ ainu-utils is distributed as a Rust crate, but you can also use its binding for 
 | Node.js  |          ![npm Version](https://img.shields.io/npm/v/ainu-utils) |
 | Python   |        ![PyPI Version](https://img.shields.io/pypi/v/ainu-utils) |
 
+## Features
+
+- `tokenize` - Tokenize Ainu text into morphemes
+- `to_kana` - Convert Ainu text written in Latin script to Kana
+- `number_to_words` - Convert integer between 1 and 100 to Ainu words
+
 ## License
 
 MIT
