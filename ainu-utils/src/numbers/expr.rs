@@ -34,11 +34,7 @@ pub fn parse(input: i32) -> Result<Expr, String> {
         return Err("Input must be between 0 and 100".to_string());
     }
 
-    if input < 10 {
-        return Ok(Expr::Int(input));
-    }
-
-    if input == 10 || input == 20 {
+    if input <= 10 || input == 20 {
         return Ok(Expr::Int(input));
     }
 
