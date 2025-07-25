@@ -16,12 +16,12 @@ static SYMBOLS: [(&str, &str); 15] = [
     ("`", ""),
 ];
 
-pub fn map_symbols(input: String) -> String {
-    let mut input = input;
+pub fn map_symbols(input: &str) -> String {
+    let mut output = input.to_string();
 
     for (from, to) in SYMBOLS.iter() {
-        input = input.replace(from, to);
+        output = output.replace(from, to);
     }
 
-    input
+    output
 }

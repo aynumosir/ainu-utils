@@ -1,29 +1,19 @@
+use crate::normalizer::normalize;
 use crate::phonology::{is_consonant, is_vowel};
 
 use super::linking::link;
 use super::maps::{TABLE_1, TABLE_2};
 use super::symbols::map_symbols;
-use unicode_normalization::char::is_combining_mark;
-use unicode_normalization::UnicodeNormalization;
-
-fn strip_accents(input: &str) -> String {
-    input.nfkd().filter(|c| !is_combining_mark(*c)).collect()
-}
-
-fn normalize(mut input: String) -> String {
-    input = input.to_lowercase();
-    input = strip_accents(input.as_str()).to_string();
-    input
-}
 
 pub fn to_kana(input: &str) -> String {
-    let mut input = input.to_string();
+    // let mut input = input.to_string();
+    let mut output: String;
 
-    input = normalize(input);
-    input = link(input);
-    input = map_symbols(input);
+    output = normalize(input);
+    output = link(&output);
+    output = map_symbols(&output);
 
-    let chars: Vec<char> = input.chars().collect();
+    let chars: Vec<char> = output.chars().collect();
 
     let mut kana = String::new();
     let mut index = 0;

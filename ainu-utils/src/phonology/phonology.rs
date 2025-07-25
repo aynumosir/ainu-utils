@@ -1,3 +1,5 @@
+use crate::normalizer::normalize;
+
 use once_cell::sync::Lazy;
 use std::collections::HashSet;
 
@@ -14,9 +16,9 @@ pub static CONSONANTS: Lazy<HashSet<char>> = Lazy::new(|| {
 });
 
 pub fn is_vowel(c: &char) -> bool {
-    return VOWELS.contains(c);
+    return VOWELS.contains(&normalize(&c.to_string()).chars().nth(0).unwrap());
 }
 
 pub fn is_consonant(c: &char) -> bool {
-    return CONSONANTS.contains(c);
+    return CONSONANTS.contains(&normalize(&c.to_string()).chars().nth(0).unwrap());
 }

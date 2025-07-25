@@ -14,3 +14,9 @@ fn it_parses() {
         ["e", "ci", "=", "ko", "yay", "ray", "ke", " ", "p", " ", "ne", " ", "na", "!"]
     )
 }
+
+
+#[test]
+fn it_handles_accent_symbols_as_well() {
+    assert_eq!(parse("káni"), ["ká", "ni"])
+}
