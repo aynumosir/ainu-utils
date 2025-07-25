@@ -1,4 +1,4 @@
-use ainu_utils::{kana, numbers, tokenizer};
+use ainu_utils::{kana, numbers, syllables, tokenizer};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -14,4 +14,9 @@ pub fn to_kana(text: &str) -> String {
 #[wasm_bindgen]
 pub fn number_to_words(input: i32) -> String {
     numbers::parse(input).unwrap().to_string()
+}
+
+#[wasm_bindgen]
+pub fn syllabicate(text: &str) -> Vec<String> {
+    syllables::parse(text)
 }

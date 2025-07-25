@@ -13,7 +13,10 @@ pub static CONSONANTS: Lazy<HashSet<char>> = Lazy::new(|| {
     items.iter().cloned().collect()
 });
 
-pub static SPECIAL_CONSONANTS: Lazy<HashSet<char>> = Lazy::new(|| {
-    let items = ['r', 'h'];
-    items.iter().cloned().collect()
-});
+pub fn is_vowel(c: &char) -> bool {
+    return VOWELS.contains(c);
+}
+
+pub fn is_consonant(c: &char) -> bool {
+    return CONSONANTS.contains(c);
+}

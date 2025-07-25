@@ -17,11 +17,17 @@ fn number_to_words(input: i32) -> String {
     ainu_utils_rust::numbers::parse(input).unwrap().to_string()
 }
 
+#[pyfunction]
+fn syllabicate(text: &str) -> Vec<String> {
+    ainu_utils_rust::syllables::parse(text)
+}
+
 #[pymodule]
 fn ainu_utils(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(tokenize, m)?)?;
     m.add_function(wrap_pyfunction!(to_kana, m)?)?;
     m.add_function(wrap_pyfunction!(number_to_words, m)?)?;
+    m.add_function(wrap_pyfunction!(syllabicate, m)?)?;
     m.add("test_number", 123)?;
     Ok(())
 }

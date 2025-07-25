@@ -2,7 +2,6 @@ mod kana;
 
 pub use self::kana::*;
 
-mod constants;
 mod linking;
 mod maps;
 mod symbols;
