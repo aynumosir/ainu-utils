@@ -29,10 +29,12 @@ static LINKING: [(&str, &str); 26] = [
     ("mm", "nm"),
 ];
 
-pub fn link(mut input: String) -> String {
+pub fn link(input: &str) -> String {
+    let mut output: String = input.to_string();
+
     for (from, to) in LINKING.iter() {
-        input = input.replace(from, to);
+        output = output.replace(from, to);
     }
 
-    input
+    output
 }
