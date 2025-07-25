@@ -1,4 +1,5 @@
-use super::constants::{CONSONANTS, SPECIAL_CONSONANTS, VOWELS};
+use crate::phonology::{is_consonant, is_vowel};
+
 use super::linking::link;
 use super::maps::{TABLE_1, TABLE_2};
 use super::symbols::map_symbols;
@@ -33,7 +34,7 @@ pub fn to_kana(input: &str) -> String {
         let next = chars.get(index + 1);
 
         if let Some(&current) = current {
-            if VOWELS.contains(&current) {
+            if is_vowel(&current) {
                 if let Some(&value) = TABLE_1.get(&current.to_string().as_ref()) {
                     kana.push_str(value);
                     index += 1;
@@ -41,7 +42,7 @@ pub fn to_kana(input: &str) -> String {
                 }
             }
 
-            if CONSONANTS.contains(&current) {
+            if is_consonant(&current) {
                 if let Some(&next) = next {
                     if current == next && !['n', 'y', 'w'].contains(&current) {
                         kana.push_str(TABLE_1.get("t").unwrap());
@@ -64,7 +65,7 @@ pub fn to_kana(input: &str) -> String {
                 }
             }
 
-            if SPECIAL_CONSONANTS.contains(&current) {
+            if current == 'r' || current == 'h' {
                 if let Some(&prev) = prev {
                     let k0 = format!("{}{}", prev, current);
                     if let Some(&value) = TABLE_2.get(&k0.as_ref()) {
