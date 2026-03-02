@@ -1,3 +1,4 @@
+pub mod datetime;
 pub mod kana;
 pub mod normalizer;
 pub mod numbers;
