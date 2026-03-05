@@ -1,11 +1,11 @@
-use ainu_utils::kana::to_kana;
+use ainu_utils::kana::{KanaConfig, transliterate};
 use std::env;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
     let text = &args[1];
 
-    let kana = to_kana(text);
+    let kana = transliterate(text, &KanaConfig::default());
 
     println!("{}", kana);
 }

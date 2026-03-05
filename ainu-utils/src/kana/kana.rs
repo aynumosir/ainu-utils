@@ -5,6 +5,7 @@ use super::linking::link;
 use super::maps::{TABLE_1, TABLE_2};
 use super::symbols::map_symbols;
 
+<<<<<<< Updated upstream
 pub fn to_kana(input: &str) -> String {
     // let mut input = input.to_string();
     let mut output: String;
@@ -16,6 +17,75 @@ pub fn to_kana(input: &str) -> String {
     let chars: Vec<char> = output.chars().collect();
 
     let mut kana = String::new();
+=======
+pub enum KanaWhitespace {
+    FullWidth,
+    HalfWidth,
+}
+
+pub struct KanaConfig {
+    pub whitespace: KanaWhitespace,
+    pub ignore_words: Vec<String>,
+    pub ignore_words_with_remaining_alphabet: bool,
+    pub ignore_capitalized_words: bool,
+}
+
+impl Default for KanaConfig {
+    fn default() -> Self {
+        Self {
+            whitespace: KanaWhitespace::FullWidth,
+            ignore_words: vec![],
+            ignore_words_with_remaining_alphabet: true,
+            ignore_capitalized_words: true,
+        }
+    }
+}
+
+pub fn transliterate(input: &str, config: &KanaConfig) -> String {
+    let input = link(input);
+
+    let mut chunks: Vec<String> = vec![];
+
+    for word in input.split_whitespace() {
+        if config.ignore_words.iter().any(|w| w == word) {
+            chunks.push(word.to_string());
+            continue;
+        }
+
+        if config.ignore_capitalized_words && word.chars().all(|c| c.is_uppercase()) {
+            chunks.push(word.to_string());
+            continue;
+        }
+
+        let kana = transliterate_word(word);
+        if config.ignore_words_with_remaining_alphabet
+            && kana.chars().any(|c| c.is_ascii_alphabetic())
+        {
+            chunks.push(word.to_string());
+            continue;
+        }
+
+        chunks.push(kana);
+    }
+
+    let whitespace = match config.whitespace {
+        KanaWhitespace::FullWidth => "　",
+        KanaWhitespace::HalfWidth => " ",
+    };
+
+    chunks.join(whitespace)
+}
+
+fn transliterate_word(input: &str) -> String {
+    let mut input: String = input.to_string();
+
+    input = normalize(&input);
+    input = map_punc(&input);
+
+    let chars: Vec<char> = input.chars().collect();
+
+    let mut output = String::new();
+>>>>>>> Stashed changes
     let mut index = 0;
 
     while index < chars.len() {
@@ -31,6 +101,7 @@ pub fn to_kana(input: &str) -> String {
                     continue;
                 }
             }
+<<<<<<< Updated upstream
 
             if is_consonant(&current) {
                 if let Some(&next) = next {
@@ -73,6 +144,15 @@ pub fn to_kana(input: &str) -> String {
 
             kana.push(current);
             index += 1;
+=======
+        } else {
+            if &'\'' == current {
+                index += 1;
+            } else {
+                output.push(*current);
+                index += 1;
+            }
+>>>>>>> Stashed changes
         }
     }
 

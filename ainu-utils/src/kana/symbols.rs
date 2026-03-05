@@ -1,7 +1,6 @@
-static SYMBOLS: [(&str, &str); 15] = [
+static PUNC: [(&str, &str); 14] = [
     ("-", ""),
     ("=", ""),
-    (" ", "　"),
     ("“", "「"),
     ("”", "」"),
     ("‘", "『"),
@@ -19,7 +18,7 @@ static SYMBOLS: [(&str, &str); 15] = [
 pub fn map_symbols(input: &str) -> String {
     let mut output = input.to_string();
 
-    for (from, to) in SYMBOLS.iter() {
+    for (from, to) in PUNC.iter() {
         output = output.replace(from, to);
     }
 
