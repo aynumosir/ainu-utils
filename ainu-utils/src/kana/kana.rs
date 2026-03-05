@@ -1,80 +1,79 @@
 use crate::normalizer::normalize;
 use crate::phonology::{is_consonant, is_vowel};
 
-use super::linking::link;
-use super::maps::{TABLE_1, TABLE_2};
-use super::symbols::map_symbols;
+use super::kana_linking::link;
+use super::kana_map_c::map_c;
+use super::kana_map_cv::map_cv;
+use super::kana_map_punc::map_punc;
+use super::kana_map_v::map_v;
 
 pub fn to_kana(input: &str) -> String {
-    // let mut input = input.to_string();
-    let mut output: String;
+    let mut input: String = input.to_string();
+    input = link(&input);
 
-    output = normalize(input);
-    output = link(&output);
-    output = map_symbols(&output);
+    let words: Vec<&str> = input.split(' ').collect();
+    let mut output = String::new();
 
-    let chars: Vec<char> = output.chars().collect();
+    for word in words {
+        let kana = word_to_kana(word);
 
-    let mut kana = String::new();
+        if kana.chars().any(|c| c.is_ascii_alphabetic()) {
+            output += word;
+        } else {
+            output += &kana;
+        }
+
+        output += "　";
+    }
+
+    output = output.trim_end().to_string();
+
+    output
+}
+
+fn word_to_kana(input: &str) -> String {
+    let mut input: String = input.to_string();
+
+    input = normalize(&input);
+    input = map_punc(&input);
+
+    let chars: Vec<char> = input.chars().collect();
+
+    let mut output = String::new();
     let mut index = 0;
 
     while index < chars.len() {
         let prev = chars.get(index.wrapping_sub(1));
-        let current = chars.get(index);
+        let current = chars.get(index).unwrap();
         let next = chars.get(index + 1);
 
-        if let Some(&current) = current {
-            if is_vowel(&current) {
-                if let Some(&value) = TABLE_1.get(&current.to_string().as_ref()) {
-                    kana.push_str(value);
-                    index += 1;
-                    continue;
-                }
-            }
-
-            if is_consonant(&current) {
-                if let Some(&next) = next {
-                    if current == next && !['n', 'y', 'w'].contains(&current) {
-                        kana.push_str(TABLE_1.get("t").unwrap());
-                        index += 1;
-                        continue;
-                    }
-
-                    let k1 = format!("{}{}", current, next);
-                    if let Some(&value) = TABLE_1.get(&k1.as_ref()) {
-                        kana.push_str(value);
-                        index += 2;
-                        continue;
-                    }
-                }
-
-                if let Some(&value) = TABLE_1.get(&current.to_string().as_ref()) {
-                    kana.push_str(value);
-                    index += 1;
-                    continue;
-                }
-            }
-
-            if current == 'r' || current == 'h' {
-                if let Some(&prev) = prev {
-                    let k0 = format!("{}{}", prev, current);
-                    if let Some(&value) = TABLE_2.get(&k0.as_ref()) {
-                        kana.push_str(value);
-                        index += 1;
-                        continue;
-                    }
-                }
-            }
-
-            if '\'' == current {
-                index += 1;
-                continue;
-            }
-
-            kana.push(current);
+        if is_vowel(&current) {
+            output.push(map_v(current));
             index += 1;
+        } else if is_consonant(&current) {
+            if next.is_some_and(|next| next == current) && !matches!(&current, 'n' | 'y' | 'w') {
+                output.push_str(&map_c(&'t', None));
+                index += 1;
+            } else if let Some(next) = next
+                && is_vowel(&next)
+            {
+                output.push_str(&map_cv(current, next));
+                index += 2;
+            } else {
+                output.push_str(&map_c(current, prev));
+                index += 1;
+            }
+        } else {
+            if &'\'' == current {
+                index += 1;
+            } else {
+                output.push(*current);
+                index += 1;
+            }
         }
+
+        println!("{}", &output);
     }
 
-    kana
+    output
 }

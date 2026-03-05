@@ -179,3 +179,11 @@ fn test_yy_and_ww() {
 fn test_glottal_stop() {
     assert_eq!(to_kana("hioy'oy"), "ヒオイオイ");
 }
+
+#[test]
+fn test_rollback() {
+    assert_eq!(
+        to_kana("Copyright Mojang AB. iteki eymek yan!"),
+        "Copyright　Mojang　AB.　イテキ　エイメㇰ　ヤン！"
+    )
+}
