@@ -16,7 +16,7 @@ static SYMBOLS: [(&str, &str); 15] = [
     ("`", ""),
 ];
 
-pub fn map_symbols(input: &str) -> String {
+pub fn map_punc(input: &str) -> String {
     let mut output = input.to_string();
 
     for (from, to) in SYMBOLS.iter() {
