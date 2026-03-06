@@ -1,4 +1,3 @@
----
 name: "Release: JS"
 
 on:
@@ -17,19 +16,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 2
 
       - name: Setup Rust
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          override: true
+        uses: dtolnay/rust-toolchain@stable
       
       # https://github.com/npm/cli/issues/6184#issuecomment-1544496444
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
           registry-url: "https://registry.npmjs.org"
 
@@ -39,7 +35,7 @@ jobs:
       - name: Build
         run: |
           wasm-pack build --target nodejs
-          node ./patch.mjs
+          node ./patch.js
           cd ./pkg
           npm pkg set name="ainu-utils"
           echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc

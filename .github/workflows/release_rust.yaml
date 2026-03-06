@@ -1,4 +1,3 @@
----
 name: "Release: Rust"
 
 env:
@@ -19,13 +18,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
-      - name: Install Rust
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          override: true
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
 
       - name: Publish package rust
         if: ${{ !contains(github.ref, 'rc') }}

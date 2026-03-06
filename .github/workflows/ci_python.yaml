@@ -5,15 +5,16 @@ on:
     branches:
       - main
   pull_request:
-    paths-ignore:
-      - "ainu-utils-js/**"
+    paths:
+      - "ainu-utils/**"
+      - "ainu-utils-python/**"
   workflow_dispatch:
 
 jobs:
-  linux:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 2
 

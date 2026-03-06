@@ -1,0 +1,48 @@
+name: "CI: JS"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    paths:
+      - "ainu-utils/**"
+      - "ainu-utils-js/**"
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: ainu-utils-js
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+
+      - name: Install wasm-pack
+        run:  curl https://drager.github.io/wasm-pack/installer/init.sh -sSf | bash
+
+      - name: Build
+        run: |
+          wasm-pack build --target nodejs
+          node ./patch.js
+          ls pkg
+
+      - name: "Debug: Upload"
+        uses: actions/upload-artifact@v6
+        with:
+          name: pkg
+          path: ainu-utils-js/pkg/
+
+      - name: Test
+        run: npm exec vitest
