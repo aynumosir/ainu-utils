@@ -22,7 +22,6 @@ static LINKING: [(&str, &str); 26] = [
     ("n_ y", "y y"),
     ("n_ w", "u w"),
     ("n _w", "n m"),
-    // ("n _w", "n m"),
     ("m _w", "n m"),
     ("p _w", "t p"),
     ("mp", "np"),
