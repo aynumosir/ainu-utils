@@ -9,8 +9,8 @@ fn tokenize(text: &str, keep_whitespace: bool) -> Vec<String> {
 }
 
 #[pyfunction]
-fn to_kana(text: &str) -> String {
-    ainu_utils_rust::kana::to_kana(text)
+fn transliterate_to_kana(text: &str) -> String {
+    ainu_utils_rust::kana::transliterate_to_kana(text)
 }
 
 #[pyfunction]
@@ -26,7 +26,7 @@ fn syllabicate(text: &str) -> Vec<String> {
 #[pymodule]
 fn ainu_utils(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(tokenize, m)?)?;
-    m.add_function(wrap_pyfunction!(to_kana, m)?)?;
+    m.add_function(wrap_pyfunction!(transliterate_to_kana, m)?)?;
     m.add_function(wrap_pyfunction!(number_to_words, m)?)?;
     m.add_function(wrap_pyfunction!(syllabicate, m)?)?;
     m.add("test_number", 123)?;

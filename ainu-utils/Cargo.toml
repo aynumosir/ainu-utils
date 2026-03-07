@@ -1,8 +1,8 @@
 [package]
 name = "ainu-utils"
-version = "0.5.1"
+version = "0.5.3"
 edition = "2024"
-description = "A collection of utilities for the Ainu language"
+description = "A toolkit for Ainu language processing, available in Rust, JavaScript, and Python."
 license = "MIT"
 
 [dependencies]
