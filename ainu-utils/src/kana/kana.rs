@@ -1,5 +1,6 @@
-use crate::normalizer::normalize;
 use crate::phoneme::Phoneme;
+use unicode_normalization::UnicodeNormalization;
+use unicode_normalization::char::is_combining_mark;
 
 use super::kana_linking::link;
 use super::kana_map_c::map_c;
@@ -7,7 +8,7 @@ use super::kana_map_cv::map_cv;
 use super::kana_map_punc::map_punc;
 use super::kana_map_v::map_v;
 
-pub fn to_kana(input: &str) -> String {
+pub fn transliterate_to_kana(input: &str) -> String {
     let mut input: String = input.to_string();
     input = link(&input);
 
@@ -15,7 +16,7 @@ pub fn to_kana(input: &str) -> String {
     let mut output = String::new();
 
     for word in words {
-        let kana = word_to_kana(word);
+        let kana = transliterate_word_to_kana(word);
 
         if kana.chars().any(|c| c.is_ascii_alphabetic()) {
             output += word;
@@ -31,10 +32,15 @@ pub fn to_kana(input: &str) -> String {
     output
 }
 
-fn word_to_kana(input: &str) -> String {
+fn strip_accents(input: &str) -> String {
+    input.nfkd().filter(|c| !is_combining_mark(*c)).collect()
+}
+
+fn transliterate_word_to_kana(input: &str) -> String {
     let mut input: String = input.to_string();
 
-    input = normalize(&input);
+    input = input.to_lowercase();
+    input = strip_accents(&input);
     input = map_punc(&input);
 
     let chars: Vec<char> = input.chars().collect();

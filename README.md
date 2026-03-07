@@ -3,7 +3,7 @@
 [![CI: Rust](https://github.com/aynumosir/ainu-utils/actions/workflows/ci_rust.yaml/badge.svg)](https://github.com/aynumosir/ainu-utils/actions/workflows/ci_rust.yaml)
 [![codecov](https://codecov.io/gh/aynumosir/ainu-utils/graph/badge.svg?token=aQHfYRVtsd)](https://codecov.io/gh/aynumosir/ainu-utils)
 
-A collection of utility for with the Ainu language
+A toolkit for Ainu language processing, available in Rust, JavaScript, and Python.
 
 ## Releases
 
@@ -19,7 +19,7 @@ ainu-utils is distributed as a Rust crate, but you can also use its binding for 
 
 `ainu-utils` provides several features for working with the Ainu language:
 
-### `tokenize`
+### Tokenization
 
 Tokenizes Ainu text into morphemes.
 
@@ -41,51 +41,7 @@ tokenize("irankarapte. e=iwanke ya?", { keepWhitespace: false });
 // => ["irankarapte", ".", "e=", "iwanke", "ya?"]
 ```
 
-### `to_kana`
-
-Converts Ainu text written in Latin script to Kana.
-
-**Python:**
-
-```py
-from ainu_utils import to_kana
-
-to_kana("irankarapte. e=iwanke ya?")
-# => "イランカラㇷ゚テ。　エイワンケ　ヤ？"
-```
-
-**JS:**
-
-```js
-import { toKana } from "ainu-utils";
-
-toKana("irankarapte. e=iwanke ya?");
-// => "イランカラㇷ゚テ。　エイワンケ　ヤ？"
-```
-
-### `number_to_words`
-
-Converts integers between 1 and 100 to Ainu words.
-
-**Python:**
-
-```py
-from ainu_utils import number_to_words
-
-number_to_words(91)
-# => "sine ikasma wan easiknehotne"
-```
-
-**JS:**
-
-```js
-import { numberToWords } from "ainu-utils";
-
-numberToWords(91);
-// => "sine ikasma wan easiknehotne"
-```
-
-### `syllabicate`
+### Syllabication
 
 Parses Ainu text into syllables.
 
@@ -105,6 +61,51 @@ import { syllabicate } from "ainu-utils";
 
 syllabicate("irankarapte. e=iwanke ya?")
 // => ["i", "ran", "ka", "rap", "te", ".", " ", "e", "=", "i", "wan", "ke", " ", "ya", "?"]
+```
+
+
+### Transliteration
+
+Converts Ainu text written in Latin script to Kana.
+
+**Python:**
+
+```py
+from ainu_utils import transliterate_to_kana
+
+transliterate_to_kana("irankarapte. e=iwanke ya?")
+# => "イランカラㇷ゚テ。　エイワンケ　ヤ？"
+```
+
+**JS:**
+
+```js
+import { transliterateToKana } from "ainu-utils";
+
+transliterateToKana("irankarapte. e=iwanke ya?");
+// => "イランカラㇷ゚テ。　エイワンケ　ヤ？"
+```
+
+### Convertion from a number to words
+
+Converts integers between 1 and 100 to Ainu words.
+
+**Python:**
+
+```py
+from ainu_utils import number_to_words
+
+number_to_words(91)
+# => "sine ikasma wan easiknehotne"
+```
+
+**JS:**
+
+```js
+import { numberToWords } from "ainu-utils";
+
+numberToWords(91);
+// => "sine ikasma wan easiknehotne"
 ```
 
 ## License

@@ -32,7 +32,9 @@ jobs:
           node-version: '24'
 
       - name: Install wasm-bindgen-cli
-        run: cargo install wasm-bindgen-cli --version 0.2.114
+        uses: taiki-e/install-action@v2
+        with:
+          tool: wasm-bindgen-cli@0.2.114
 
       - name: Install Node.js dependencies
         run: npm ci
