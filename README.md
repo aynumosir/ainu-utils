@@ -23,44 +23,88 @@ ainu-utils is distributed as a Rust crate, but you can also use its binding for 
 
 Tokenizes Ainu text into morphemes.
 
+**Python:**
+
 ```py
 from ainu_utils import tokenize
 
-tokenize("irankarapte. e=iwanke ya?", false);
+tokenize("irankarapte. e=iwanke ya?", False)
 # => ["irankarapte", ".", "e=", "iwanke", "ya?"]
+```
+
+**JS:**
+
+```js
+import { tokenize } from "ainu-utils";
+
+tokenize("irankarapte. e=iwanke ya?", false);
+// => ["irankarapte", ".", "e=", "iwanke", "ya?"]
 ```
 
 ### `to_kana`
 
 Converts Ainu text written in Latin script to Kana.
 
+**Python:**
+
 ```py
 from ainu_utils import to_kana
 
-to_kana("irankarapte. e=iwanke ya?");
+to_kana("irankarapte. e=iwanke ya?")
 # => "イランカラㇷ゚テ。　エイワンケ　ヤ？"
+```
+
+**JS:**
+
+```js
+import { to_kana } from "ainu-utils";
+
+to_kana("irankarapte. e=iwanke ya?");
+// => "イランカラㇷ゚テ。　エイワンケ　ヤ？"
 ```
 
 ### `number_to_words`
 
 Converts integers between 1 and 100 to Ainu words.
 
+**Python:**
+
 ```py
 from ainu_utils import number_to_words
 
-number_to_words(91);
+number_to_words(91)
 # => "sine ikasma wan easiknehotne"
+```
+
+**JS:**
+
+```js
+import { number_to_words } from "ainu-utils";
+
+number_to_words(91);
+// => "sine ikasma wan easiknehotne"
 ```
 
 ### `syllabicate`
 
 Parses Ainu text into syllables.
 
+**Python:**
+
 ```py
 from ainu_utils import syllabicate
 
 syllabicate("irankarapte. e=iwanke ya?")
 # => ["i", "ran", "ka", "rap", "te", ".", " ", "e", "=", "i", "wan", "ke", " ", "ya", "?"]
+```
+
+**JS:**
+
+```js
+import { syllabicate } from "ainu-utils";
+
+syllabicate("irankarapte. e=iwanke ya?")
+// => ["i", "ran", "ka", "rap", "te", ".", " ", "e", "=", "i", "wan", "ke", " ", "ya", "?"]
 ```
 
 ## License
