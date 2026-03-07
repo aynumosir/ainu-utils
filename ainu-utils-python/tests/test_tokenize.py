@@ -2,7 +2,7 @@ import ainu_utils
 
 
 def test_tokenize():
-    result = ainu_utils.tokenize("irankarapte. e=iwanke ya?", keep_whitespace=False)
+    result = ainu_utils.tokenize("irankarapte. e=iwanke ya?")
     assert result == ["irankarapte", ".", "e=", "iwanke", "ya", "?"]
 
 

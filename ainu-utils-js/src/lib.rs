@@ -1,19 +1,38 @@
-use ainu_utils::{kana, numbers, syllables, tokenizer};
-use js_sys::Reflect;
+use ainu_utils::{
+    kana, numbers, syllables,
+    tokens::{self, TokenizeOptions},
+};
+use serde::Deserialize;
 use wasm_bindgen::prelude::*;
 
+#[derive(Deserialize, Default)]
+#[serde(rename_all = "camelCase")]
+pub struct TokenizeOptionsJs {
+    keep_whitespace: Option<bool>,
+}
+
+impl From<TokenizeOptionsJs> for TokenizeOptions {
+    fn from(value: TokenizeOptionsJs) -> Self {
+        let defaults = TokenizeOptions::default();
+        Self {
+            keep_whitespace: value.keep_whitespace.unwrap_or(defaults.keep_whitespace),
+        }
+    }
+}
+
 #[wasm_bindgen]
-pub fn tokenize(text: &str, options: JsValue) -> Vec<String> {
-    let keep_whitespace = Reflect::get(&options, &JsValue::from_str("keepWhitespace"))
-        .ok()
-        .and_then(|v| v.as_bool())
-        .unwrap_or(false);
-    tokenizer::tokenize(text, keep_whitespace)
+pub fn tokenize(text: &str, options: Option<JsValue>) -> Result<Vec<String>, JsError> {
+    let tokenize_options: TokenizeOptions = options
+        .map(serde_wasm_bindgen::from_value::<TokenizeOptionsJs>)
+        .transpose()?
+        .map(Into::into)
+        .unwrap_or_default();
+    Ok(tokens::tokenize(text, &tokenize_options))
 }
 
 #[wasm_bindgen]
 pub fn syllabicate(text: &str) -> Vec<String> {
-    syllables::parse(text)
+    syllables::syllabicate(text)
 }
 
 #[wasm_bindgen(js_name = transliterateToKana)]
