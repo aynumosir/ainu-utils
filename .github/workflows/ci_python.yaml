@@ -35,5 +35,5 @@ jobs:
         run: |
           set -e
           pip install ainu-utils --find-links dist --force-reinstall
-          pip install pytest
+          pip install ".[test,dev]"
           cd ./ainu-utils-python && pytest
