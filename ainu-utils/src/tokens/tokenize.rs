@@ -1,4 +1,4 @@
-use crate::tokenizer::unfix::unfix;
+use super::unfix::unfix;
 
 pub fn tokenize(text: &str, keep_whitespace: bool) -> Vec<String> {
     let mut words = Vec::new();

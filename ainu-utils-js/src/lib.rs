@@ -1,4 +1,4 @@
-use ainu_utils::{kana, numbers, syllables, tokenizer};
+use ainu_utils::{kana, numbers, syllables, tokens};
 use js_sys::Reflect;
 use wasm_bindgen::prelude::*;
 
@@ -8,12 +8,12 @@ pub fn tokenize(text: &str, options: JsValue) -> Vec<String> {
         .ok()
         .and_then(|v| v.as_bool())
         .unwrap_or(false);
-    tokenizer::tokenize(text, keep_whitespace)
+    tokens::tokenize(text, keep_whitespace)
 }
 
 #[wasm_bindgen]
 pub fn syllabicate(text: &str) -> Vec<String> {
-    syllables::parse(text)
+    syllables::syllabicate(text)
 }
 
 #[wasm_bindgen(js_name = transliterateToKana)]

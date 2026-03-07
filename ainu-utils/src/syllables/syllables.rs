@@ -1,6 +1,6 @@
 use crate::phoneme::Phoneme;
 
-pub fn parse(input: &str) -> Vec<String> {
+pub fn syllabicate(input: &str) -> Vec<String> {
     let chars: Vec<char> = input.chars().collect();
 
     let mut syllables = vec![];

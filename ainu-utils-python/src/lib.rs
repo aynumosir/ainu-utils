@@ -5,7 +5,7 @@ use pyo3::prelude::*;
 #[pyfunction]
 #[pyo3(signature = (text, *, keep_whitespace = false))]
 fn tokenize(text: &str, keep_whitespace: bool) -> Vec<String> {
-    ainu_utils_rust::tokenizer::tokenize(text, keep_whitespace)
+    ainu_utils_rust::tokens::tokenize(text, keep_whitespace)
 }
 
 #[pyfunction]
@@ -20,7 +20,7 @@ fn number_to_words(input: i32) -> String {
 
 #[pyfunction]
 fn syllabicate(text: &str) -> Vec<String> {
-    ainu_utils_rust::syllables::parse(text)
+    ainu_utils_rust::syllables::syllabicate(text)
 }
 
 #[pymodule]
