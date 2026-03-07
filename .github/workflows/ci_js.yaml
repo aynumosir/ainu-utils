@@ -1,23 +1,21 @@
-# https://docs.npmjs.com/trusted-publishers
-name: "Release: JS"
+name: "CI: JS"
 
 on:
   push:
-    tags:
-      - v*
-      - js-v*
+    branches:
+      - main
+  pull_request:
+    paths:
+      - "ainu-utils/**"
+      - "ainu-utils-js/**"
   workflow_dispatch:
-
-permissions:
-  id-token: write
-  contents: read
 
 defaults:
   run:
     working-directory: ainu-utils-js
 
 jobs:
-  publish:
+  test:
     runs-on: ubuntu-latest
 
     steps:
@@ -28,25 +26,19 @@ jobs:
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
       
-      # https://github.com/npm/cli/issues/6184#issuecomment-1544496444
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '24'
-          registry-url: "https://registry.npmjs.org"
 
       - name: Install wasm-bindgen-cli
         run: cargo install wasm-bindgen-cli --version 0.2.114
-
-      - name: Install npm
-        run: npm install -g npm@latest
 
       - name: Install Node.js dependencies
         run: npm ci
 
       - name: Build
         run: bash ./build.sh
-
-      - name: Publish
-        run: cd ./dist && npm publish
-
+          
+      - name: Test
+        run: npm exec vitest
