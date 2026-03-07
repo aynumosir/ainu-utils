@@ -28,7 +28,7 @@ Tokenizes Ainu text into morphemes.
 ```py
 from ainu_utils import tokenize
 
-tokenize("irankarapte. e=iwanke ya?", False)
+tokenize("irankarapte. e=iwanke ya?", keep_whitespace=False)
 # => ["irankarapte", ".", "e=", "iwanke", "ya?"]
 ```
 
@@ -37,7 +37,7 @@ tokenize("irankarapte. e=iwanke ya?", False)
 ```js
 import { tokenize } from "ainu-utils";
 
-tokenize("irankarapte. e=iwanke ya?", false);
+tokenize("irankarapte. e=iwanke ya?", { keepWhitespace: false });
 // => ["irankarapte", ".", "e=", "iwanke", "ya?"]
 ```
 
@@ -57,9 +57,9 @@ to_kana("irankarapte. e=iwanke ya?")
 **JS:**
 
 ```js
-import { to_kana } from "ainu-utils";
+import { toKana } from "ainu-utils";
 
-to_kana("irankarapte. e=iwanke ya?");
+toKana("irankarapte. e=iwanke ya?");
 // => "イランカラㇷ゚テ。　エイワンケ　ヤ？"
 ```
 
@@ -79,9 +79,9 @@ number_to_words(91)
 **JS:**
 
 ```js
-import { number_to_words } from "ainu-utils";
+import { numberToWords } from "ainu-utils";
 
-number_to_words(91);
+numberToWords(91);
 // => "sine ikasma wan easiknehotne"
 ```
 

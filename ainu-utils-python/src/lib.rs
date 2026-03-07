@@ -3,6 +3,7 @@ extern crate ainu_utils as ainu_utils_rust;
 use pyo3::prelude::*;
 
 #[pyfunction]
+#[pyo3(signature = (text, *, keep_whitespace = false))]
 fn tokenize(text: &str, keep_whitespace: bool) -> Vec<String> {
     ainu_utils_rust::tokenizer::tokenize(text, keep_whitespace)
 }
