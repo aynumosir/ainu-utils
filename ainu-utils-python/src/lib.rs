@@ -1,11 +1,16 @@
 extern crate ainu_utils as ainu_utils_rust;
 
+use ainu_utils_rust::tokens::TokenizeOptions;
 use pyo3::prelude::*;
 
 #[pyfunction]
-#[pyo3(signature = (text, *, keep_whitespace = false))]
-fn tokenize(text: &str, keep_whitespace: bool) -> Vec<String> {
-    ainu_utils_rust::tokens::tokenize(text, keep_whitespace)
+#[pyo3(signature = (text, *, keep_whitespace = None))]
+fn tokenize(text: &str, keep_whitespace: Option<bool>) -> Vec<String> {
+    let tokenize_options_default = TokenizeOptions::default();
+    let tokenize_options = TokenizeOptions {
+        keep_whitespace: keep_whitespace.unwrap_or(tokenize_options_default.keep_whitespace),
+    };
+    ainu_utils_rust::tokens::tokenize(text, &tokenize_options)
 }
 
 #[pyfunction]

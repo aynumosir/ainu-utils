@@ -1,6 +1,11 @@
 use super::unfix::unfix;
 
-pub fn tokenize(text: &str, keep_whitespace: bool) -> Vec<String> {
+#[derive(Default)]
+pub struct TokenizeOptions {
+    pub keep_whitespace: bool,
+}
+
+pub fn tokenize(text: &str, options: &TokenizeOptions) -> Vec<String> {
     let mut words = Vec::new();
     let mut word = String::new();
 
@@ -21,7 +26,7 @@ pub fn tokenize(text: &str, keep_whitespace: bool) -> Vec<String> {
                 words.push(c.to_string());
             }
 
-            if c.is_whitespace() && keep_whitespace {
+            if c.is_whitespace() && options.keep_whitespace {
                 words.push(c.to_string());
             }
         }

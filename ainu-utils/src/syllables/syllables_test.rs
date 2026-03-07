@@ -1,22 +1,23 @@
-use super::syllables::parse;
+use super::syllables::syllabicate;
 
 #[test]
-fn it_parses() {
-    assert_eq!(parse("pirka"), ["pir", "ka"]);
-    assert_eq!(parse("cikappo"), ["ci", "kap", "po"]);
-    assert_eq!(parse("aep"), ["a", "ep"]);
+fn it_syllabicates() {
+    assert_eq!(syllabicate("pirka"), ["pir", "ka"]);
+    assert_eq!(syllabicate("cikappo"), ["ci", "kap", "po"]);
+    assert_eq!(syllabicate("aep"), ["a", "ep"]);
     assert_eq!(
-        parse("eyaykosiramsuypa"),
+        syllabicate("eyaykosiramsuypa"),
         ["e", "yay", "ko", "si", "ram", "suy", "pa"]
     );
     assert_eq!(
-        parse("eci=koyayrayke p ne na!"),
-        ["e", "ci", "=", "ko", "yay", "ray", "ke", " ", "p", " ", "ne", " ", "na", "!"]
+        syllabicate("eci=koyayrayke p ne na!"),
+        [
+            "e", "ci", "=", "ko", "yay", "ray", "ke", " ", "p", " ", "ne", " ", "na", "!"
+        ]
     )
 }
 
-
 #[test]
 fn it_handles_accent_symbols_as_well() {
-    assert_eq!(parse("káni"), ["ká", "ni"])
+    assert_eq!(syllabicate("káni"), ["ká", "ni"])
 }
