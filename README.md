@@ -71,9 +71,13 @@ Converts Ainu text written in Latin script to Kana.
 **Python:**
 
 ```py
-from ainu_utils import transliterate_to_kana
+from ainu_utils import transliterate_to_kana, Whitespace
 
-transliterate_to_kana("irankarapte. e=iwanke ya?")
+transliterate_to_kana(
+    "irankarapte. e=iwanke ya?",
+    whitespace=Whitespace.Fullwidth,
+    ignore_pattern=None,
+)
 # => "イランカラㇷ゚テ。　エイワンケ　ヤ？"
 ```
 
@@ -82,7 +86,10 @@ transliterate_to_kana("irankarapte. e=iwanke ya?")
 ```js
 import { transliterateToKana } from "ainu-utils";
 
-transliterateToKana("irankarapte. e=iwanke ya?");
+transliterateToKana("irankarapte. e=iwanke ya?", {
+  whitespace: "fullwidth",
+  ignore_pattern: null,
+});
 // => "イランカラㇷ゚テ。　エイワンケ　ヤ？"
 ```
 

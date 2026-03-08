@@ -1,4 +1,5 @@
 use crate::phoneme::Phoneme;
+use regex::Regex;
 use unicode_normalization::UnicodeNormalization;
 use unicode_normalization::char::is_combining_mark;
 
@@ -8,26 +9,71 @@ use super::kana_map_cv::map_cv;
 use super::kana_map_punc::map_punc;
 use super::kana_map_v::map_v;
 
-pub fn transliterate_to_kana(input: &str) -> String {
+pub enum Whitespace {
+    Fullwidth,
+    Halfwidth,
+}
+
+impl ToString for Whitespace {
+    fn to_string(&self) -> String {
+        match self {
+            Self::Fullwidth => "　".to_string(),
+            Self::Halfwidth => " ".to_string(),
+        }
+    }
+}
+
+impl Default for Whitespace {
+    fn default() -> Self {
+        Self::Fullwidth
+    }
+}
+
+#[derive(Debug)]
+pub enum IgnorePatternError {
+    InvalidPattern,
+}
+
+pub struct IgnorePattern(Regex);
+
+impl IgnorePattern {
+    pub fn new(value: &str) -> Result<Self, IgnorePatternError> {
+        let regex = Regex::new(value).map_err(|_| IgnorePatternError::InvalidPattern)?;
+        Ok(IgnorePattern(regex))
+    }
+}
+
+#[derive(Default)]
+pub struct TransliterateToKanaOptions {
+    pub whitespace: Whitespace,
+    pub ignore_pattern: Option<IgnorePattern>,
+}
+
+#[derive(Debug)]
+pub enum TransliterateToKanaError {
+    InvalidIgnore,
+}
+
+pub fn transliterate_to_kana(input: &str, options: &TransliterateToKanaOptions) -> String {
     let mut input: String = input.to_string();
     input = link(&input);
 
-    let words: Vec<&str> = input.split(' ').collect();
-    let mut output = String::new();
+    let words_latn: Vec<&str> = input.split(' ').collect();
+    let mut words_kana: Vec<String> = vec![];
 
-    for word in words {
-        let kana = transliterate_word_to_kana(word);
-
-        if kana.chars().any(|c| c.is_ascii_alphabetic()) {
-            output += word;
-        } else {
-            output += &kana;
+    for word_latn in words_latn {
+        if let Some(ignore) = &options.ignore_pattern
+            && ignore.0.is_match(word_latn)
+        {
+            words_kana.push(word_latn.to_string());
+            continue;
         }
 
-        output += "　";
+        let word_kana = transliterate_word_to_kana(word_latn);
+        words_kana.push(word_kana);
     }
 
-    output = output.trim_end().to_string();
+    let output = words_kana.join(&options.whitespace.to_string()).to_string();
 
     output
 }
