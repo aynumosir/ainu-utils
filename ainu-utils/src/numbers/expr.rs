@@ -30,8 +30,8 @@ impl ToString for Expr {
 }
 
 pub fn parse(input: i32) -> Result<Expr, String> {
-    if input < 0 || 100 < input {
-        return Err("Input must be between 0 and 100".to_string());
+    if input < 1 || 100 < input {
+        return Err("Input must be between 1 and 100".to_string());
     }
 
     if input <= 10 || input == 20 {
