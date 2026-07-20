@@ -196,3 +196,13 @@ fn test_rollback() {
         "Copyright　Mojang　AB.　イテキ　エイメㇰ　ヤン！"
     )
 }
+
+#[test]
+fn test_invalid_syllables_do_not_panic() {
+    // ti/yi/wu are not Ainu syllables. Unknown CV combinations must fall back
+    // to keeping the word in Latin rather than panicking.
+    assert_eq!(transliterate_to_kana("tite"), "tite");
+    assert_eq!(transliterate_to_kana("wuye"), "wuye");
+    // valid Ainu alongside still converts
+    assert_eq!(transliterate_to_kana("kamuy"), "カムイ");
+}

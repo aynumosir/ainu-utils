@@ -1,5 +1,6 @@
 pub fn map_cv(c: &char, v: &char) -> String {
-    let value = match format!("{}{}", c, v).as_str() {
+    let syllable = format!("{}{}", c, v);
+    let value = match syllable.as_str() {
         "ka" => "カ",
         "ki" => "キ",
         "ku" => "ク",
@@ -82,7 +83,10 @@ pub fn map_cv(c: &char, v: &char) -> String {
         "wi" => "ウィ",
         "we" => "ウェ",
         "wo" => "ウォ",
-        _ => unreachable!(),
+        // ti/yi/wu are not Ainu syllables; they never occur in valid input.
+        // Unknown combinations return the romaji syllable unchanged, so the
+        // caller keeps the whole word in Latin instead of panicking.
+        _ => return syllable,
     };
 
     value.to_string()
