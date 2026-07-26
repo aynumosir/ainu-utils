@@ -26,3 +26,10 @@ fn test_subtraction() {
     let expr = parse(90).unwrap();
     assert_eq!(expr.to_string(), "wan easiknehotne");
 }
+
+#[test]
+fn test_out_of_range() {
+    assert!(parse(0).is_err());
+    assert!(parse(-1).is_err());
+    assert!(parse(101).is_err());
+}
